@@ -1,0 +1,12 @@
+# dockerFile-agent
+
+FROM openjdk:17.0.1-jdk-slim
+
+WORKDIR /app
+COPY agent.java /app/scouter/agent.java
+COPY agent.host /app/scouter/agent.host
+COPY agent-custom-entrypoint.sh /app/custom-entrypoint.sh
+RUN chmod +x ./scouter/agent.host/host.sh
+EXPOSE 8080
+
+ENTRYPOINT ["/app/custom-entrypoint.sh"]

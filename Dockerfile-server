@@ -1,0 +1,8 @@
+# dockerFile-collector
+
+FROM openjdk:11-slim
+
+WORKDIR /app
+COPY server /app
+
+ENTRYPOINT ["bash", "-c", "nohup java -Xmx1024m -classpath ./scouter-server-boot.jar scouter.boot.Boot ./lib > nohup.out & sleep 1; tail -f nohup.out"]

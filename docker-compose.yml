@@ -1,0 +1,37 @@
+version: '3.2'
+
+services:
+  scouter-server:
+    image: scouter-server
+    build:
+      context: .
+      dockerfile: Dockerfile-server
+    ports:
+      - 6100:6100
+      - 6100:6100/udp
+      - 6180:6180
+    networks:
+      jpashop_default:
+        ipv4_address: 172.30.0.2
+
+  scouter-agent:
+    image: scouter-agent
+    build:
+      context: .
+      dockerfile: Dockerfile-agent
+    ports:
+      - 8080:8080
+    networks:
+      jpashop_default:
+        ipv4_address: 172.30.0.3
+    volumes:
+      - ./builds:/app/builds
+    depends_on:
+      - scouter-server
+
+networks:
+  jpashop_default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/16
